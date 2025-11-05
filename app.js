@@ -19,6 +19,7 @@ forgetPass.addEventListener("click", () => {
   loginSection.style.display = "none";
   fromSectin.style.display = "flex";
   displayCard.style.display = "none";
+  cardsContainer.style.display = "none";
 });
 
 login.addEventListener("click", (e) => {
@@ -27,6 +28,7 @@ login.addEventListener("click", (e) => {
   loginSection.style.display = "flex";
   aboutSectin.style.display = "none";
   displayCard.style.display = "none";
+  cardsContainer.style.display = "none";
 });
 
 const contact = document.getElementById("content__container");
@@ -54,6 +56,7 @@ contactMenuBtn.forEach((btn) => {
     aboutSectin.style.display = "none";
     home.style.display = "none";
     displayCard.style.display = "none";
+    cardsContainer.style.display = "none";
   });
 });
 
@@ -65,6 +68,7 @@ signUpMenuBtn.forEach((btn) => {
     aboutSectin.style.display = "none";
     home.style.display = "none";
     displayCard.style.display = "none";
+    cardsContainer.style.display = "none";
   });
 });
 
@@ -76,6 +80,7 @@ aboutBtn.forEach((btn) => {
     aboutSectin.style.display = "block";
     home.style.display = "none";
     displayCard.style.display = "none";
+    cardsContainer.style.display = "none";
   });
 });
 homeMenuBtn.forEach((btn) => {
@@ -86,6 +91,7 @@ homeMenuBtn.forEach((btn) => {
     aboutSectin.style.display = "none";
     home.style.display = "block";
     displayCard.style.display = "none";
+    cardsContainer.style.display = "none";
   });
 });
 
@@ -326,7 +332,8 @@ const cardCounter = document.querySelector(".card__counter");
 let count = 1;
 
 addToCardBtn.forEach((btn) => {
-  btn.addEventListener("click", () => {
+  btn.addEventListener("click", (e) => {
+    e.stopPropagation();
     cardCounter.innerText = count++;
     if (cardCounter.innerText >= 0) {
       cardCounter.style.display = "flex";
@@ -410,4 +417,138 @@ cardBtn.addEventListener("click", () => {
 returnToShop.addEventListener("click", () => {
   displayCard.style.display = "none";
   home.style.display = "block";
+});
+
+const pImgs = document.querySelectorAll(".small__img div img");
+const pLimgs = document.querySelector(".large__img img");
+
+pImgs.forEach((img) => {
+  img.addEventListener("click", () => {
+    pLimgs.src = img.src;
+  });
+});
+
+const sizeBtn = document.querySelectorAll(".size button");
+
+sizeBtn.forEach((btn) => {
+  btn.addEventListener("click", () => {
+    sizeBtn.forEach((b) => {
+      b.style.background = "transparent";
+      b.style.color = "#000";
+    });
+
+    btn.style.background = "#db4444";
+    btn.style.color = "#fafafa";
+  });
+});
+
+const cardsContainer = document.getElementById(
+  "products__details__page__container"
+);
+
+const cards = document.querySelectorAll(".cards");
+
+cards.forEach((card) => {
+  card.addEventListener("click", () => {
+    cardsContainer.style.display = "block";
+    home.style.display = "none";
+    const name = card.querySelector(".cards__info h4");
+    const img = card.querySelector(".cards__img img");
+    const price = card.querySelector(".cards__info p span");
+
+    const details = document.getElementById(
+      "products__details__page__container"
+    );
+    const cardDetails = document.createElement("div");
+    cardDetails.classList.add("product__details__section");
+    cardDetails.innerHTML = `
+    
+       <div class="img__section">
+        <div class="large__img">
+          <img src="${img.src}" alt="">
+        </div>
+        <div class="small__img">
+          <div><img src="${img.src}" alt=""></div>
+          <div><img src="${img.src}" alt=""></div>
+          <div><img src="${img.src}" alt=""></div>
+        </div>
+      </div>
+      <div class="products__info__section">
+        <h4>${name.innerText}</h4>
+        <div class="icns">
+          <img src="image/Vector (2).svg" alt="">
+          <img src="image/Vector (2).svg" alt="">
+          <img src="image/Vector (2).svg" alt="">
+          <img src="image/Vector (2).svg" alt="">
+          <img src="image/Vector (3).svg" alt="">
+        </div>
+        <h4>${price.innerText}</h4>
+        <p>PlayStation 5 Controller Skin High quality vinyl with air channel adhesive for easy bubble free install & mess free removal Pressure sensitive.</p>
+        <hr>
+        <div class="size">
+          <p>Size</p>
+          <button>XS</button><button>S</button><button>M</button><button>L</button><button>XL</button>
+        </div>
+        <div class="buy__section">
+          <div class="product__amount">
+            <button class="p__remove">-</button>
+            <div class="number"><p>1</p></div>
+            <button class="p__add">+</button>
+          </div>
+          <button class="buy__button">Buy Now</button>
+          <button class="return__to__shop">Return To Shop</button>
+        </div>
+        <div class="delivery">
+            <div class="d__icon">
+              <img src="image/icon-delivery.svg" alt="">
+          </div>
+          <div>
+            <p>Free Delivery</p>
+          <a href="">Enter your postal code for Delivery Availability</a>
+          </div>
+        </div> 
+      </div>
+      
+    `;
+    document.addEventListener("click", (e) => {
+      if (e.target.classList.contains("return__to__shop")) {
+        cardsContainer.style.display = "none";
+        home.style.display = "block";
+      }
+    });
+
+    details.append(cardDetails);
+
+    const sizeBtn = document.querySelectorAll(".size button");
+
+    sizeBtn.forEach((btn) => {
+      btn.addEventListener("click", () => {
+        sizeBtn.forEach((b) => {
+          b.style.background = "transparent";
+          b.style.color = "#000";
+        });
+
+        btn.style.background = "#db4444";
+        btn.style.color = "#fafafa";
+      });
+    });
+
+    
+    const pAdd = document.querySelector(".p__add");
+    const pRemove = document.querySelector(".p__remove");
+    const pNumber = document.querySelector(".number p");
+
+    let pNum = 1;
+
+    pAdd.addEventListener("click", () => {
+      pNum++;
+      pNumber.innerHTML = pNum;
+    });
+    pRemove.addEventListener("click", () => {
+      if (pNum > 1) {
+        pNum--;
+        pNumber.innerHTML = pNum;
+      }
+    });
+  });
 });
