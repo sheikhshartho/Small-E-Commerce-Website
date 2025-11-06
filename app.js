@@ -334,6 +334,16 @@ let count = 1;
 addToCardBtn.forEach((btn) => {
   btn.addEventListener("click", (e) => {
     e.stopPropagation();
+    const originalText = btn.innerText;
+
+    btn.innerText = "Loading...";
+    setTimeout(() => {
+      btn.innerHTML = "&#10003;";
+
+      setTimeout(() => {
+        btn.innerText = originalText;
+      }, 1000);
+    }, 1000);
     cardCounter.innerText = count++;
     if (cardCounter.innerText >= 0) {
       cardCounter.style.display = "flex";
@@ -459,6 +469,8 @@ cards.forEach((card) => {
     const details = document.getElementById(
       "products__details__page__container"
     );
+
+    details.innerHTML = "";
     const cardDetails = document.createElement("div");
     cardDetails.classList.add("product__details__section");
     cardDetails.innerHTML = `
@@ -533,7 +545,6 @@ cards.forEach((card) => {
       });
     });
 
-    
     const pAdd = document.querySelector(".p__add");
     const pRemove = document.querySelector(".p__remove");
     const pNumber = document.querySelector(".number p");
@@ -552,3 +563,251 @@ cards.forEach((card) => {
     });
   });
 });
+
+const loadCard = async () => {
+  const res = await fetch("https://fakestoreapi.com/products");
+  const data = await res.json();
+  displayCards(data);
+};
+
+const displayCards = async (crds) => {
+  const crdsContainer = document.querySelector(".our__product__container");
+  crds.forEach((crd) => {
+    const titleWords = crd.title.split(" ");
+    const shortTitle =
+      titleWords.length > 5
+        ? titleWords.slice(0, 3).join(" ") + "..."
+        : crd.title;
+    const getcrd = document.createElement("div");
+    getcrd.classList.add("getcrd");
+    getcrd.innerHTML = `<div class="cards">
+              <div class="cards__img">
+                <img src="${crd.image}" alt="">
+                <button class="add__to__card">Add To Cart</button>
+              </div>
+              <div class="cards__info">
+                <h4>${shortTitle}</h4>
+                <p> $${crd.price} </p>
+                <div class="cards__star__icon">
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640"><path d="M341.5 45.1C337.4 37.1 329.1 32 320.1 32C311.1 32 302.8 37.1 298.7 45.1L225.1 189.3L65.2 214.7C56.3 216.1 48.9 222.4 46.1 231C43.3 239.6 45.6 249 51.9 255.4L166.3 369.9L141.1 529.8C139.7 538.7 143.4 547.7 150.7 553C158 558.3 167.6 559.1 175.7 555L320.1 481.6L464.4 555C472.4 559.1 482.1 558.3 489.4 553C496.7 547.7 500.4 538.8 499 529.8L473.7 369.9L588.1 255.4C594.5 249 596.7 239.6 593.9 231C591.1 222.4 583.8 216.1 574.8 214.7L415 189.3L341.5 45.1z"/></svg>
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640"><path d="M341.5 45.1C337.4 37.1 329.1 32 320.1 32C311.1 32 302.8 37.1 298.7 45.1L225.1 189.3L65.2 214.7C56.3 216.1 48.9 222.4 46.1 231C43.3 239.6 45.6 249 51.9 255.4L166.3 369.9L141.1 529.8C139.7 538.7 143.4 547.7 150.7 553C158 558.3 167.6 559.1 175.7 555L320.1 481.6L464.4 555C472.4 559.1 482.1 558.3 489.4 553C496.7 547.7 500.4 538.8 499 529.8L473.7 369.9L588.1 255.4C594.5 249 596.7 239.6 593.9 231C591.1 222.4 583.8 216.1 574.8 214.7L415 189.3L341.5 45.1z"/></svg>
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640"><path d="M341.5 45.1C337.4 37.1 329.1 32 320.1 32C311.1 32 302.8 37.1 298.7 45.1L225.1 189.3L65.2 214.7C56.3 216.1 48.9 222.4 46.1 231C43.3 239.6 45.6 249 51.9 255.4L166.3 369.9L141.1 529.8C139.7 538.7 143.4 547.7 150.7 553C158 558.3 167.6 559.1 175.7 555L320.1 481.6L464.4 555C472.4 559.1 482.1 558.3 489.4 553C496.7 547.7 500.4 538.8 499 529.8L473.7 369.9L588.1 255.4C594.5 249 596.7 239.6 593.9 231C591.1 222.4 583.8 216.1 574.8 214.7L415 189.3L341.5 45.1z"/></svg>
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640"><path d="M341.5 45.1C337.4 37.1 329.1 32 320.1 32C311.1 32 302.8 37.1 298.7 45.1L225.1 189.3L65.2 214.7C56.3 216.1 48.9 222.4 46.1 231C43.3 239.6 45.6 249 51.9 255.4L166.3 369.9L141.1 529.8C139.7 538.7 143.4 547.7 150.7 553C158 558.3 167.6 559.1 175.7 555L320.1 481.6L464.4 555C472.4 559.1 482.1 558.3 489.4 553C496.7 547.7 500.4 538.8 499 529.8L473.7 369.9L588.1 255.4C594.5 249 596.7 239.6 593.9 231C591.1 222.4 583.8 216.1 574.8 214.7L415 189.3L341.5 45.1z"/></svg>
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640"><path d="M320.1 417.6C330.1 417.6 340 419.9 349.1 424.6L423.5 462.5L410.5 380C407.3 359.8 414 339.3 428.4 324.8L487.4 265.7L404.9 252.6C384.7 249.4 367.2 236.7 357.9 218.5L319.9 144.1L319.9 417.7zM489.4 553C482.1 558.3 472.4 559.1 464.4 555L320.1 481.6L175.8 555C167.8 559.1 158.1 558.3 150.8 553C143.5 547.7 139.8 538.8 141.2 529.8L166.4 369.9L52 255.4C45.6 249 43.4 239.6 46.2 231C49 222.4 56.3 216.1 65.3 214.7L225.2 189.3L298.8 45.1C302.9 37.1 311.2 32 320.2 32C329.2 32 337.5 37.1 341.6 45.1L415 189.3L574.9 214.7C583.8 216.1 591.2 222.4 594 231C596.8 239.6 594.5 249 588.2 255.4L473.7 369.9L499 529.8C500.4 538.7 496.7 547.7 489.4 553z"/></svg>
+                </div>
+              </div>
+            </div>
+    `;
+    crdsContainer.append(getcrd);
+
+    const card = getcrd.querySelector(".cards");
+    card.addEventListener("click", () => {
+      cardsContainer.style.display = "block";
+      home.style.display = "none";
+      const name = card.querySelector(".cards__info h4");
+      const img = card.querySelector(".cards__img img");
+      const price = card.querySelector(".cards__info p ");
+
+      console.log(price);
+
+      const details = document.getElementById(
+        "products__details__page__container"
+      );
+
+      details.innerHTML = "";
+      const cardDetails = document.createElement("div");
+      cardDetails.classList.add("product__details__section");
+      cardDetails.innerHTML = `
+    
+      <div class="img__section">
+        <div class="large__img">
+          <img src="${img.src}" alt="">
+        </div>
+        <div class="small__img">
+          <div><img src="${img.src}" alt=""></div>
+          <div><img src="${img.src}" alt=""></div>
+          <div><img src="${img.src}" alt=""></div>
+        </div>
+      </div>
+      <div class="products__info__section">
+        <h4>${name.innerText}</h4>
+        <div class="icns">
+          <img src="image/Vector (2).svg" alt="">
+          <img src="image/Vector (2).svg" alt="">
+          <img src="image/Vector (2).svg" alt="">
+          <img src="image/Vector (2).svg" alt="">
+          <img src="image/Vector (3).svg" alt="">
+        </div>
+        <h4>${price.innerText}</h4>
+        <p>PlayStation 5 Controller Skin High quality vinyl with air channel adhesive for easy bubble free install & mess free removal Pressure sensitive.</p>
+        <hr>
+        <div class="size">
+          <p>Size</p>
+          <button>XS</button><button>S</button><button>M</button><button>L</button><button>XL</button>
+        </div>
+        <div class="buy__section">
+          <div class="product__amount">
+            <button class="p__remove">-</button>
+            <div class="number"><p>1</p></div>
+            <button class="p__add">+</button>
+          </div>
+          <button class="buy__button">Buy Now</button>
+          <button class="return__to__shop">Return To Shop</button>
+        </div>
+        <div class="delivery">
+            <div class="d__icon">
+              <img src="image/icon-delivery.svg" alt="">
+          </div>
+          <div>
+            <p>Free Delivery</p>
+          <a href="">Enter your postal code for Delivery Availability</a>
+          </div>
+        </div> 
+      </div>
+    `;
+      document.addEventListener("click", (e) => {
+        if (e.target.classList.contains("return__to__shop")) {
+          cardsContainer.style.display = "none";
+          home.style.display = "block";
+        }
+      });
+
+      details.append(cardDetails);
+      const sizeBtn = document.querySelectorAll(".size button");
+
+      sizeBtn.forEach((btn) => {
+        btn.addEventListener("click", () => {
+          sizeBtn.forEach((b) => {
+            b.style.background = "transparent";
+            b.style.color = "#000";
+          });
+
+          btn.style.background = "#db4444";
+          btn.style.color = "#fafafa";
+
+          const pAdd = document.querySelector(".p__add");
+          const pRemove = document.querySelector(".p__remove");
+          const pNumber = document.querySelector(".number p");
+
+          let pNum = 1;
+
+          pAdd.addEventListener("click", () => {
+            pNum++;
+            pNumber.innerHTML = pNum;
+          });
+          pRemove.addEventListener("click", () => {
+            if (pNum > 1) {
+              pNum--;
+              pNumber.innerHTML = pNum;
+            }
+          });
+        });
+      });
+    });
+    const carda = getcrd.querySelector(".cards");
+    const btn = carda.querySelector(".add__to__card");
+    btn.addEventListener("click", (e) => {
+      e.stopPropagation();
+      const originalText = btn.innerText;
+
+      btn.innerText = "Loading...";
+      setTimeout(() => {
+        btn.innerHTML = "&#10003;";
+
+        setTimeout(() => {
+          btn.innerText = originalText;
+        }, 1000);
+      }, 1000);
+      cardCounter.innerText = count++;
+      if (cardCounter.innerText >= 0) {
+        cardCounter.style.display = "flex";
+      }
+
+      const card = btn.closest(".cards");
+      const imgSrc = card.querySelector(".cards__img img").src;
+      const name = card.querySelector(".cards__info h4").innerText;
+      const priceText = card
+        .querySelector(".cards__info p")
+        .childNodes[0].textContent.trim();
+      const basePrice = parseFloat(priceText.replace(/[^0-9.]/g, ""));
+
+      const cardItems = document.createElement("div");
+      cardItems.classList.add("selected__cards");
+      cardItems.innerHTML = `
+      <div class="product__info">
+        <div class="img__card">
+          <img src="${imgSrc}" alt="">
+          <span class="remove__btn">✕</span>
+        </div>
+        <p>${name}</p>
+      </div>
+
+      <p class="price">$${basePrice}</p>
+
+      <div class="quantity">
+        <input type="number" min="1" value="1">
+      </div>
+
+      <p class="subtotal">$${basePrice}</p>
+    `;
+
+      addCardContainer.append(cardItems);
+
+      const qtyInput = cardItems.querySelector("input");
+      const subtotal = cardItems.querySelector(".subtotal");
+      const amount = document.querySelector(".amount");
+      const amount2 = document.querySelector(".amount2");
+
+      function updateGrandTotal() {
+        let grandTotal = 0;
+        document.querySelectorAll(".subtotal").forEach((item) => {
+          grandTotal += parseFloat(item.innerText.replace("$", "")) || 0;
+        });
+        amount.innerText = `$${grandTotal.toFixed(2)}`;
+        amount2.innerText = `$${grandTotal.toFixed(2)}`;
+      }
+
+      qtyInput.addEventListener("input", () => {
+        const qty = parseInt(qtyInput.value) || 1;
+        const total = qty * basePrice;
+        subtotal.innerText = `$${total.toFixed(2)}`;
+        updateGrandTotal();
+      });
+
+      const removeBtn = cardItems.querySelector(".remove__btn");
+      removeBtn.addEventListener("click", () => {
+        cardItems.remove();
+        count--;
+        if (count <= 1) {
+          cardCounter.style.display = "none";
+          count = 1;
+        }
+        cardCounter.innerText = count - 1;
+        updateGrandTotal();
+      });
+
+      updateGrandTotal();
+    });
+  });
+};
+
+const loder = document.querySelector(".loder__container");
+const buyBtn = document.querySelectorAll(".Buy");
+const payment = document.querySelector(".payment__section");
+const paymentClose = document.querySelector(".close__btn__two");
+
+buyBtn.forEach((btn) => {
+  btn.addEventListener("click", () => {
+    loder.style.display = "flex";
+    setTimeout(() => {
+      loder.style.display = "none";
+      payment.style.display = "flex";
+    }, 400);
+  });
+});
+
+paymentClose.addEventListener("click", () => {
+  payment.style.display = "none";
+});
+
+loadCard();
