@@ -564,10 +564,18 @@ cards.forEach((card) => {
   });
 });
 
+const linkCardGrid = document.querySelector(".our__product__container");
+const loadMoreButton = document.querySelector(".load__more");
+
+let page = 1;
+const postsPerPage = 4;
+
 const loadCard = async () => {
-  const res = await fetch("https://fakestoreapi.com/products");
+  const skip = (page - 1) * postsPerPage;
+  const url = `https://dummyjson.com/products?limit=${postsPerPage}&skip=${skip}`;
+  const res = await fetch(url);
   const data = await res.json();
-  displayCards(data);
+  displayCards(data.products);
 };
 
 const displayCards = async (crds) => {
@@ -582,7 +590,7 @@ const displayCards = async (crds) => {
     getcrd.classList.add("getcrd");
     getcrd.innerHTML = `<div class="cards">
               <div class="cards__img">
-                <img src="${crd.image}" alt="">
+                <img src="${crd.thumbnail}" alt="">
                 <button class="add__to__card">Add To Cart</button>
               </div>
               <div class="cards__info">
@@ -617,6 +625,7 @@ const displayCards = async (crds) => {
       details.innerHTML = "";
       const cardDetails = document.createElement("div");
       cardDetails.classList.add("product__details__section");
+
       cardDetails.innerHTML = `
     
       <div class="img__section">
@@ -624,9 +633,9 @@ const displayCards = async (crds) => {
           <img src="${img.src}" alt="">
         </div>
         <div class="small__img">
-          <div><img src="${img.src}" alt=""></div>
-          <div><img src="${img.src}" alt=""></div>
-          <div><img src="${img.src}" alt=""></div>
+          <div><img src="${crd.images?.[0] || crd.thumbnail}" alt=""></div>
+          <div><img src="${crd.images?.[1] || crd.thumbnail}" alt=""></div>
+          <div><img src="${crd.images?.[2] || crd.thumbnail}" alt=""></div>
         </div>
       </div>
       <div class="products__info__section">
@@ -639,7 +648,7 @@ const displayCards = async (crds) => {
           <img src="image/Vector (3).svg" alt="">
         </div>
         <h4>${price.innerText}</h4>
-        <p>PlayStation 5 Controller Skin High quality vinyl with air channel adhesive for easy bubble free install & mess free removal Pressure sensitive.</p>
+        <p>${crd.description}</p>
         <hr>
         <div class="size">
           <p>Size</p>
@@ -673,6 +682,16 @@ const displayCards = async (crds) => {
       });
 
       details.append(cardDetails);
+
+      const pImgs = document.querySelectorAll(".small__img div img");
+      const pLimgs = document.querySelector(".large__img img");
+
+      pImgs.forEach((img) => {
+        img.addEventListener("click", () => {
+          pLimgs.src = img.src;
+        });
+      });
+
       const sizeBtn = document.querySelectorAll(".size button");
 
       sizeBtn.forEach((btn) => {
@@ -791,6 +810,12 @@ const displayCards = async (crds) => {
   });
 };
 
+loadCard();
+loadMoreButton.addEventListener("click", () => {
+  page++;
+  loadCard();
+});
+
 const loder = document.querySelector(".loder__container");
 const buyBtn = document.querySelectorAll(".Buy");
 const payment = document.querySelector(".payment__section");
@@ -810,4 +835,67 @@ paymentClose.addEventListener("click", () => {
   payment.style.display = "none";
 });
 
-loadCard();
+// document.getElementById("search__input").addEventListener("keyup", (e) => {
+//   loadCard(e.target.value);
+// });
+
+const categoryBtn = document.querySelectorAll(".c__btn");
+
+categoryBtn.forEach((btn) => {
+  btn.addEventListener("click", () => {
+    const id = btn.getAttribute("data-id");
+    loder.style.display = "flex";
+    setTimeout(() => {
+      loder.style.display = "none";
+      loadCatagory(id);
+    }, 300);
+  });
+});
+
+const loadCatagory = async (category) => {
+  const res = await fetch("https://dummyjson.com/products?limit=1000");
+  const data = await res.json();
+  dispalyCategory(data.products, category);
+};
+
+const dispalyCategory = async (products, category) => {
+  const filteredData = products.filter((product) => {
+    return product.category === category;
+  });
+  dispalyCategoryCard(filteredData);
+};
+
+const dispalyCategoryCard = async (crd) => {
+  const category = document.querySelector(".category__container");
+  category.innerHTML = "";
+  crd.forEach((crd) => {
+    const titleWords = crd.title.split(" ");
+    const shortTitle =
+      titleWords.length > 5
+        ? titleWords.slice(0, 3).join(" ") + "..."
+        : crd.title;
+    const c__card = document.createElement("div");
+    c__card.innerHTML = `
+  <div class="cards">
+              <div class="cards__img">
+                <img src="${crd.thumbnail}" alt="">
+                <button class="add__to__card">Add To Cart</button>
+              </div>
+              <div class="cards__info">
+                <h4>${shortTitle}</h4>
+                <p> $${crd.price} </p>
+                <div class="cards__star__icon">
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640"><path d="M341.5 45.1C337.4 37.1 329.1 32 320.1 32C311.1 32 302.8 37.1 298.7 45.1L225.1 189.3L65.2 214.7C56.3 216.1 48.9 222.4 46.1 231C43.3 239.6 45.6 249 51.9 255.4L166.3 369.9L141.1 529.8C139.7 538.7 143.4 547.7 150.7 553C158 558.3 167.6 559.1 175.7 555L320.1 481.6L464.4 555C472.4 559.1 482.1 558.3 489.4 553C496.7 547.7 500.4 538.8 499 529.8L473.7 369.9L588.1 255.4C594.5 249 596.7 239.6 593.9 231C591.1 222.4 583.8 216.1 574.8 214.7L415 189.3L341.5 45.1z"/></svg>
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640"><path d="M341.5 45.1C337.4 37.1 329.1 32 320.1 32C311.1 32 302.8 37.1 298.7 45.1L225.1 189.3L65.2 214.7C56.3 216.1 48.9 222.4 46.1 231C43.3 239.6 45.6 249 51.9 255.4L166.3 369.9L141.1 529.8C139.7 538.7 143.4 547.7 150.7 553C158 558.3 167.6 559.1 175.7 555L320.1 481.6L464.4 555C472.4 559.1 482.1 558.3 489.4 553C496.7 547.7 500.4 538.8 499 529.8L473.7 369.9L588.1 255.4C594.5 249 596.7 239.6 593.9 231C591.1 222.4 583.8 216.1 574.8 214.7L415 189.3L341.5 45.1z"/></svg>
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640"><path d="M341.5 45.1C337.4 37.1 329.1 32 320.1 32C311.1 32 302.8 37.1 298.7 45.1L225.1 189.3L65.2 214.7C56.3 216.1 48.9 222.4 46.1 231C43.3 239.6 45.6 249 51.9 255.4L166.3 369.9L141.1 529.8C139.7 538.7 143.4 547.7 150.7 553C158 558.3 167.6 559.1 175.7 555L320.1 481.6L464.4 555C472.4 559.1 482.1 558.3 489.4 553C496.7 547.7 500.4 538.8 499 529.8L473.7 369.9L588.1 255.4C594.5 249 596.7 239.6 593.9 231C591.1 222.4 583.8 216.1 574.8 214.7L415 189.3L341.5 45.1z"/></svg>
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640"><path d="M341.5 45.1C337.4 37.1 329.1 32 320.1 32C311.1 32 302.8 37.1 298.7 45.1L225.1 189.3L65.2 214.7C56.3 216.1 48.9 222.4 46.1 231C43.3 239.6 45.6 249 51.9 255.4L166.3 369.9L141.1 529.8C139.7 538.7 143.4 547.7 150.7 553C158 558.3 167.6 559.1 175.7 555L320.1 481.6L464.4 555C472.4 559.1 482.1 558.3 489.4 553C496.7 547.7 500.4 538.8 499 529.8L473.7 369.9L588.1 255.4C594.5 249 596.7 239.6 593.9 231C591.1 222.4 583.8 216.1 574.8 214.7L415 189.3L341.5 45.1z"/></svg>
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640"><path d="M320.1 417.6C330.1 417.6 340 419.9 349.1 424.6L423.5 462.5L410.5 380C407.3 359.8 414 339.3 428.4 324.8L487.4 265.7L404.9 252.6C384.7 249.4 367.2 236.7 357.9 218.5L319.9 144.1L319.9 417.7zM489.4 553C482.1 558.3 472.4 559.1 464.4 555L320.1 481.6L175.8 555C167.8 559.1 158.1 558.3 150.8 553C143.5 547.7 139.8 538.8 141.2 529.8L166.4 369.9L52 255.4C45.6 249 43.4 239.6 46.2 231C49 222.4 56.3 216.1 65.3 214.7L225.2 189.3L298.8 45.1C302.9 37.1 311.2 32 320.2 32C329.2 32 337.5 37.1 341.6 45.1L415 189.3L574.9 214.7C583.8 216.1 591.2 222.4 594 231C596.8 239.6 594.5 249 588.2 255.4L473.7 369.9L499 529.8C500.4 538.7 496.7 547.7 489.4 553z"/></svg>
+                </div>
+              </div>
+            </div>
+  `;
+    
+    category.append(c__card);
+    
+  });
+};

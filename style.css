@@ -29,20 +29,28 @@ body {
 }
 
 .nav__section {
-  max-width: 1440px;
+  /* max-width: 1440px; */
   margin: 0 auto;
   background: var(--bg--color);
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 9;
+  padding: 0 50px;
 }
 
 .nav__boder {
-  width: 100%;
+  width: 100% !important;
+  z-index: 9;
+
 }
 .nav__bar {
   display: flex;
   align-items: center;
   justify-content: space-between;
   margin-top: 48px;
-  margin-bottom: 18px;
+  margin-bottom: 30px;
 }
 .nav__logo {
   display: flex;
@@ -150,7 +158,7 @@ body {
 #home__container {
   width: 100%;
   max-width: 1440px;
-  margin: 46px auto 0;
+  margin: 150px auto 0;
   padding: 0 20px;
 }
 
@@ -475,6 +483,9 @@ body {
   fill: var(--text--color);
   transform: scale(1);
 }
+
+
+
 .best__seling__section {
   margin-top: 80px;
 }
@@ -543,6 +554,32 @@ body {
   margin-top: 80px;
 }
 
+#porducts__containers .btn-container {
+  width: 100%;
+  text-align: center;
+}
+
+#porducts__containers .btn-container button {
+  font-size: 16px;
+  font-weight: 500;
+  background: var(--button2--color);
+  color: var(--text--color);
+  padding: 16px;
+  border: 0;
+  border-radius: 5px;
+  cursor: pointer;
+  transform: scale(1);
+  transition: 0.2s;
+}
+#porducts__containers .btn-container button:hover {
+  background: var(--button1--hover);
+  transform: scale(1.1);
+}
+#porducts__containers .btn-container button:active {
+  background: var(--button2--color);
+  transform: scale(1);
+}
+
 .arrival__container {
   margin-top: 140px;
 }
@@ -554,7 +591,6 @@ body {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 32px;
-  /* place-items: center; */
 }
 
 .section__two .arrival:first-child {
@@ -648,7 +684,7 @@ body {
   display: none;
   grid-template-columns: repeat(3, 1fr);
   margin: 0 auto;
-  margin-top: 80px;
+  margin-top: 150px;
   margin-bottom: 140px;
   max-width: 1440px;
   place-items: center;
@@ -738,7 +774,7 @@ body {
 #about__container {
   max-width: 1440px;
   margin: 0 auto;
-  margin-top: 80px;
+  margin-top: 150px;
   margin-bottom: 140px;
   display: none;
 }
@@ -980,7 +1016,7 @@ body {
 #login__and__signup {
   max-width: 1440px;
   margin: 0 auto;
-  margin-top: 60px;
+  margin-top: 150px;
   display: none;
 }
 
@@ -1107,8 +1143,6 @@ body {
   justify-content: space-between;
 }
 
-
-
 #login {
   border: 0;
   border-radius: 4px;
@@ -1154,6 +1188,7 @@ body {
   align-items: center;
   justify-content: center;
   position: relative;
+  margin-top: 150px;
 }
 
 .back__btn {
@@ -1192,7 +1227,7 @@ body {
   border-radius: 12px;
   box-shadow: 0 8px 30px rgba(0, 0, 0, 0.05);
   overflow: hidden;
-  margin-top: 80px;
+  margin-top: 150px;
 }
 
 .card__heading {
@@ -1361,7 +1396,7 @@ body {
 
 #products__details__page__container {
   display: none;
-  margin-top: 60px;
+  margin-top: 160px;
 }
 
 .product__details__section {
@@ -1561,7 +1596,7 @@ body {
   border: 5px dotted transparent;
   border-top-color: rgb(255, 255, 255);
   border-left-color: rgba(255, 255, 255, 0.404);
-  animation: spin 0.4s linear infinite;
+  animation: spin 0.5s linear infinite;
 }
 
 @keyframes spin {
@@ -1606,7 +1641,7 @@ body {
   border: 1px solid gray;
   outline: none;
 }
-.payment__container div{
+.payment__container div {
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -1615,7 +1650,7 @@ body {
   gap: 8px;
 }
 
-.close__btn__two{
+.close__btn__two {
   position: absolute;
   top: -5px;
   right: -5px;
@@ -1628,13 +1663,13 @@ body {
   background: red;
   cursor: pointer;
   transform: scale(1);
-  transition: .3s;
+  transition: 0.3s;
 }
-.close__btn__two:active{
+.close__btn__two:active {
   background: #db4444;
 }
 
-.close__btn__two:hover{
+.close__btn__two:hover {
   transform: scale(1.1);
 }
 
@@ -2311,5 +2346,8 @@ body {
   }
   .dts h4 {
     margin-bottom: 8px;
+  }
+  .payment__container {
+    padding: 16px;
   }
 }
